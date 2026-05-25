@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Satriani Makeup Art — Marioriwawo, Soppeng</title>
+  <meta name="description" content="Professional Makeup Artist di Marioriwawo, Kabupaten Soppeng. Spesialis make up wedding, wisuda, party, dan mappettu ada/prawed." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose:      #c9956c;
+      --rose-deep: #a8714a;
+      --rose-lt:   #e8c9b0;
+      --blush:     #f5ede6;
+      --cream:     #fdf8f4;
+      --ink:       #2a1f1a;
+      --muted:     #7a6256;
+      --gold:      #c9a96e;
+      --gold-lt:   #e8d5b0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5vw;
+      background: rgba(253,248,244,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,149,108,0.18);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 32px rgba(42,31,26,.07); }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: .04em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--rose); }
+
+    .nav-links {
+      display: flex; gap: 2.2rem; list-style: none;
+    }
+    .nav-links a {
+      font-size: .82rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--rose); }
+
+    .nav-cta {
+      background: var(--rose);
+      color: #fff !important;
+      padding: .5rem 1.4rem;
+      border-radius: 100px;
+      transition: background .2s !important;
+    }
+    .nav-cta:hover { background: var(--rose-deep) !important; color: #fff !important; }
+
+    .nav-toggle {
+      display: none; background: none; border: none; cursor: pointer;
+      flex-direction: column; gap: 5px; padding: 4px;
+    }
+    .nav-toggle span {
+      display: block; width: 24px; height: 2px;
+      background: var(--ink); border-radius: 2px; transition: .3s;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+      padding-top: 72px;
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 6rem 5vw 6rem 8vw;
+      position: relative; z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: .75rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 1.4rem;
+      display: flex; align-items: center; gap: .8rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 36px; height: 1px;
+      background: var(--rose);
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      color: var(--ink);
+      margin-bottom: 1.8rem;
+    }
+    .hero-title em {
+      font-style: italic; color: var(--rose);
+    }
+
+    .hero-sub {
+      font-size: .95rem; color: var(--muted);
+      line-height: 1.75; max-width: 400px; margin-bottom: 2.8rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .82rem 2rem; border-radius: 100px;
+      font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+      text-decoration: none; font-weight: 500;
+      transition: all .25s; cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--rose); color: #fff;
+      box-shadow: 0 8px 28px rgba(201,149,108,.38);
+    }
+    .btn-primary:hover {
+      background: var(--rose-deep);
+      box-shadow: 0 12px 36px rgba(201,149,108,.48);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--rose-lt);
+      color: var(--rose-deep);
+    }
+    .btn-outline:hover {
+      background: var(--blush);
+      border-color: var(--rose);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex; gap: 2.8rem; margin-top: 3.6rem;
+      padding-top: 2.4rem;
+      border-top: 1px solid rgba(201,149,108,.2);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 600;
+      color: var(--rose); line-height: 1;
+    }
+    .stat-lbl {
+      font-size: .72rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--muted);
+      margin-top: .3rem;
+    }
+
+    .hero-right {
+      position: relative; overflow: hidden;
+    }
+
+    .hero-image-wrap {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(135deg, #e8c9b0 0%, #d4a882 30%, #c9956c 60%, #a8714a 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Decorative layered rings */
+    .hero-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .hero-ring-1 { width: 500px; height: 500px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .hero-ring-2 { width: 360px; height: 360px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .hero-ring-3 { width: 220px; height: 220px; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(255,255,255,.06); }
+
+    .hero-badge {
+      position: absolute; top: 2.5rem; right: 2.5rem;
+      width: 96px; height: 96px;
+      border-radius: 50%; background: rgba(255,255,255,.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.3);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-size: .62rem; letter-spacing: .12em;
+      text-transform: uppercase; color: #fff; text-align: center;
+      line-height: 1.4;
+    }
+    .hero-badge strong { font-size: 1.4rem; font-family: 'Cormorant Garamond', serif; font-weight: 600; }
+
+    .hero-text-overlay {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5rem, 10vw, 9rem);
+      font-weight: 300; font-style: italic;
+      color: rgba(255,255,255,.12);
+      position: absolute; bottom: -1rem; left: -1rem;
+      line-height: 1; pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* Floating icons */
+    .hero-icon {
+      position: absolute; width: 54px; height: 54px;
+      border-radius: 50%; background: rgba(255,255,255,.2);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      animation: float 4s ease-in-out infinite;
+    }
+    .hero-icon-1 { top: 22%; left: 14%; animation-delay: 0s; }
+    .hero-icon-2 { top: 58%; right: 10%; animation-delay: 1.5s; }
+    .hero-icon-3 { bottom: 22%; left: 20%; animation-delay: .8s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    /* ── INTRO STRIP ── */
+    .intro-strip {
+      background: var(--ink);
+      padding: 1.4rem 5vw;
+      display: flex; align-items: center;
+      gap: 2rem; overflow: hidden;
+    }
+    .intro-strip-inner {
+      display: flex; gap: 3.5rem;
+      animation: marquee 18s linear infinite;
+      white-space: nowrap;
+    }
+    .intro-strip span {
+      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gold-lt); display: flex; align-items: center; gap: .7rem;
+    }
+    .intro-strip span::before { content: '✦'; color: var(--rose); }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 6rem 5vw; }
+
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-eye {
+      font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 1rem;
+      display: flex; align-items: center; justify-content: center; gap: .7rem;
+    }
+    .section-eye::before, .section-eye::after {
+      content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--rose-lt);
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300; color: var(--ink); line-height: 1.15;
+    }
+    .section-title em { font-style: italic; color: var(--rose); }
+    .section-sub {
+      margin-top: .9rem; font-size: .9rem;
+      color: var(--muted); max-width: 520px; margin-inline: auto; line-height: 1.7;
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--blush); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.6rem;
+      max-width: 1200px; margin-inline: auto;
+    }
+
+    .service-card {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 2.4rem 2rem;
+      border: 1px solid rgba(201,149,108,.15);
+      transition: all .3s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--gold));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .35s;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 52px rgba(201,149,108,.2); }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blush), var(--gold-lt));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1.4rem;
+    }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem; font-weight: 600; color: var(--ink);
+      margin-bottom: .6rem;
+    }
+    .service-desc {
+      font-size: .84rem; color: var(--muted); line-height: 1.65;
+      margin-bottom: 1.4rem;
+    }
+
+    .service-price-block { border-top: 1px solid var(--gold-lt); padding-top: 1.2rem; }
+    .price-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: .5rem;
+    }
+    .price-label { font-size: .78rem; color: var(--muted); letter-spacing: .05em; }
+    .price-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 600; color: var(--rose);
+    }
+    .service-includes {
+      margin-top: .9rem;
+      display: flex; flex-wrap: wrap; gap: .4rem;
+    }
+    .tag {
+      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+      background: var(--blush); color: var(--rose-deep);
+      border-radius: 100px; padding: .26rem .75rem;
+      border: 1px solid var(--rose-lt);
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+      max-width: 1160px; margin-inline: auto;
+      padding-block: 7rem;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-img-box {
+      aspect-ratio: 3/4; border-radius: 24px;
+      background: linear-gradient(160deg, var(--rose-lt) 0%, var(--rose) 60%, var(--rose-deep) 100%);
+      position: relative; overflow: hidden;
+    }
+    .about-img-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem,7vw,5.5rem); font-style: italic;
+      color: rgba(255,255,255,.25); font-weight: 300;
+    }
+    .about-accent {
+      position: absolute; bottom: -2rem; right: -2rem;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--rose-lt));
+      opacity: .4;
+    }
+    .about-dot {
+      position: absolute; top: 2rem; left: -1.5rem;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--cream); border: 3px solid var(--rose-lt);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .about-content { padding-left: 1rem; }
+    .about-content .section-header { text-align: left; margin-bottom: 2rem; }
+    .about-content .section-eye { justify-content: flex-start; }
+    .about-content .section-eye::after { display: none; }
+    .about-text {
+      font-size: .92rem; color: var(--muted); line-height: 1.82;
+      margin-bottom: 2rem;
+    }
+    .about-features {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin-bottom: 2.4rem;
+    }
+    .feat-item {
+      display: flex; align-items: flex-start; gap: .7rem;
+    }
+    .feat-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--blush); border: 1px solid var(--rose-lt);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; flex-shrink: 0; margin-top: .1rem;
+    }
+    .feat-text { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+    .feat-text strong { display: block; color: var(--ink); font-weight: 500; margin-bottom: .1rem; }
+
+    /* ── PROCESS ── */
+    #process { background: var(--ink); }
+    #process .section-title { color: #fff; }
+    #process .section-sub { color: rgba(255,255,255,.5); }
+    #process .section-eye { color: var(--rose-lt); }
+    #process .section-eye::before, #process .section-eye::after { background: rgba(201,149,108,.3); }
+
+    .process-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem; max-width: 1100px; margin-inline: auto;
+    }
+    .step {
+      text-align: center; padding: 2.2rem 1.5rem;
+      border: 1px solid rgba(201,149,108,.15); border-radius: 18px;
+      position: relative; transition: .3s;
+    }
+    .step:hover { border-color: var(--rose); background: rgba(201,149,108,.05); }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 600;
+      color: rgba(201,149,108,.18); line-height: 1;
+      margin-bottom: .8rem;
+    }
+    .step-icon {
+      font-size: 1.8rem; margin-bottom: .9rem; display: block;
+    }
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; color: #fff; margin-bottom: .5rem;
+    }
+    .step-desc { font-size: .78rem; color: rgba(255,255,255,.45); line-height: 1.6; }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: var(--blush); }
+
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; max-width: 1100px; margin-inline: auto;
+    }
+    .testi-card {
+      background: var(--cream); border-radius: 18px;
+      padding: 2rem 1.8rem;
+      border: 1px solid rgba(201,149,108,.12);
+      transition: .3s;
+    }
+    .testi-card:hover { box-shadow: 0 12px 40px rgba(201,149,108,.14); }
+    .testi-stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; letter-spacing: .1em; }
+    .testi-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; color: var(--ink);
+      line-height: 1.65; margin-bottom: 1.4rem;
+    }
+    .testi-author { display: flex; align-items: center; gap: .8rem; }
+    .testi-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose-lt), var(--rose));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; color: #fff;
+    }
+    .testi-name { font-size: .82rem; font-weight: 500; color: var(--ink); }
+    .testi-role { font-size: .72rem; color: var(--muted); }
+
+    /* ── CTA BAND ── */
+    #cta-band {
+      background: linear-gradient(135deg, var(--rose-deep) 0%, var(--rose) 50%, var(--gold) 100%);
+      padding: 5rem 5vw; text-align: center; position: relative; overflow: hidden;
+    }
+    #cta-band::before {
+      content: 'Satriani';
+      position: absolute; font-family: 'Cormorant Garamond', serif;
+      font-size: 18vw; font-style: italic; font-weight: 300;
+      color: rgba(255,255,255,.07); top: 50%; left: 50%;
+      transform: translate(-50%,-50%); white-space: nowrap;
+      pointer-events: none;
+    }
+    #cta-band .section-eye { color: rgba(255,255,255,.7); }
+    #cta-band .section-eye::before, #cta-band .section-eye::after { background: rgba(255,255,255,.3); }
+    #cta-band h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem,5vw,3.8rem); font-weight: 300;
+      color: #fff; margin-bottom: 1rem; line-height: 1.15;
+    }
+    #cta-band p { color: rgba(255,255,255,.75); font-size: .9rem; margin-bottom: 2.5rem; }
+    .btn-white {
+      background: #fff; color: var(--rose-deep);
+      box-shadow: 0 8px 28px rgba(0,0,0,.18);
+    }
+    .btn-white:hover {
+      background: var(--cream); transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(0,0,0,.22);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); padding: 4rem 5vw 2rem;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.8fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .footer-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 600; color: #fff;
+      margin-bottom: .6rem;
+    }
+    .footer-brand-name span { color: var(--rose-lt); }
+    .footer-brand-desc { font-size: .82rem; color: rgba(255,255,255,.4); line-height: 1.7; max-width: 280px; }
+    .footer-col h4 {
+      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--rose-lt); margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: .55rem; }
+    .footer-col a {
+      font-size: .82rem; color: rgba(255,255,255,.45);
+      text-decoration: none; transition: color .2s;
+    }
+    .footer-col a:hover { color: var(--rose-lt); }
+    .footer-col p { font-size: .82rem; color: rgba(255,255,255,.45); line-height: 1.6; }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: .72rem; color: rgba(255,255,255,.28);
+    }
+
+    /* ── WA FLOATING ── */
+    .wa-float {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: #25d366;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 28px rgba(37,211,102,.45);
+      text-decoration: none;
+      transition: transform .25s, box-shadow .25s;
+      animation: pulse-wa 2.4s ease-in-out infinite;
+    }
+    .wa-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 40px rgba(37,211,102,.55);
+      animation: none;
+    }
+    .wa-float svg { width: 28px; height: 28px; fill: #fff; }
+    @keyframes pulse-wa {
+      0%,100% { box-shadow: 0 6px 28px rgba(37,211,102,.45); }
+      50%      { box-shadow: 0 6px 28px rgba(37,211,102,.45), 0 0 0 10px rgba(37,211,102,.12); }
+    }
+
+    .wa-tooltip {
+      position: absolute; right: 70px; top: 50%; transform: translateY(-50%);
+      background: var(--ink); color: #fff;
+      font-size: .75rem; white-space: nowrap;
+      padding: .4rem .9rem; border-radius: 8px;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .wa-float:hover .wa-tooltip { opacity: 1; }
+    .wa-tooltip::after {
+      content: ''; position: absolute; left: 100%; top: 50%; transform: translateY(-50%);
+      border: 6px solid transparent; border-left-color: var(--ink);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { height: 340px; }
+      .hero-left { padding: 3rem 6vw 2rem; }
+      #about { grid-template-columns: 1fr; padding: 4rem 5vw; }
+      .about-visual { max-width: 360px; margin-inline: auto; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-top > :first-child { grid-column: span 2; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--cream); padding: 1.5rem 6vw;
+        border-bottom: 1px solid var(--rose-lt);
+        gap: 1rem;
+      }
+      .hero-stats { gap: 1.8rem; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-top > :first-child { grid-column: span 1; }
+    }
+
+    /* ── ANIMATE ON SCROLL ── */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Satriani <span>Makeup Art</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Layanan</a></li>
+    <li><a href="#about">Tentang</a></li>
+    <li><a href="#process">Proses</a></li>
+    <li><a href="#testimonials">Testimoni</a></li>
+    <li><a href="booking.html" class="nav-cta">Book Sekarang</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Marioriwawo, Kab. Soppeng</p>
+    <h1 class="hero-title">
+      Cantik Sempurna<br>di Setiap <em>Momen</em><br>Spesialmu
+    </h1>
+    <p class="hero-sub">
+      Professional Makeup Artist untuk wedding, wisuda, party, dan adat. Menjaga kecantikan anda tampil memukau dari awal hingga akhir acara.
+    </p>
+    <div class="hero-actions">
+      <a href="booking.html" class="btn btn-primary">✨ Book Sekarang</a>
+      <a href="#services" class="btn btn-outline">Lihat Paket</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">200+</div>
+        <div class="stat-lbl">Klien Puas</div>
+      </div>
+      <div>
+        <div class="stat-num">5★</div>
+        <div class="stat-lbl">Rating</div>
+      </div>
+      <div>
+        <div class="stat-num">5+</div>
+        <div class="stat-lbl">Tahun Pengalaman</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-wrap">
+      <div class="hero-ring hero-ring-1"></div>
+      <div class="hero-ring hero-ring-2"></div>
+      <div class="hero-ring hero-ring-3"></div>
+      <div class="hero-icon hero-icon-1">💄</div>
+      <div class="hero-icon hero-icon-2">✨</div>
+      <div class="hero-icon hero-icon-3">💍</div>
+      <div class="hero-badge"><strong>MUA</strong>Professional<br>Artist</div>
+      <div class="hero-text-overlay">Beauty</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE STRIP -->
+<div class="intro-strip">
+  <div class="intro-strip-inner">
+    <span>Wedding Makeup</span>
+    <span>Wisuda Makeup</span>
+    <span>Party Makeup</span>
+    <span>Mappettu Ada</span>
+    <span>Prawed Makeup</span>
+    <span>Free Softlens</span>
+    <span>Free Hijab Do</span>
+    <span>Marioriwawo Soppeng</span>
+    <!-- duplicate for seamless loop -->
+    <span>Wedding Makeup</span>
+    <span>Wisuda Makeup</span>
+    <span>Party Makeup</span>
+    <span>Mappettu Ada</span>
+    <span>Prawed Makeup</span>
+    <span>Free Softlens</span>
+    <span>Free Hijab Do</span>
+    <span>Marioriwawo Soppeng</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header fade-up">
+    <p class="section-eye">Paket Layanan</p>
+    <h2 class="section-title">Pilih Paket yang <em>Tepat</em> Untukmu</h2>
+    <p class="section-sub">Setiap paket dirancang untuk tampilan terbaik di momen paling berkesan dalam hidupmu.</p>
+  </div>
+
+  <div class="services-grid">
+
+    <!-- Party -->
+    <div class="service-card fade-up">
+      <div class="service-icon">🎉</div>
+      <div class="service-name">Make Up Party</div>
+      <p class="service-desc">Tampil glam dan percaya diri di setiap acara pesta. Tersedia pilihan reguler dan premium.</p>
+      <div class="service-price-block">
+        <div class="price-row">
+          <span class="price-label">Reguler</span>
+          <span class="price-val">Rp 100.000 – 150.000</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Premium</span>
+          <span class="price-val">Rp 250.000</span>
+        </div>
+        <div class="service-includes">
+          <span class="tag">Premium: Free Softlens</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mappettu Ada / Prawed -->
+    <div class="service-card fade-up">
+      <div class="service-icon">🌸</div>
+      <div class="service-name">Mappettu Ada &amp; Prawed</div>
+      <p class="service-desc">Tampilan anggun dan elegan untuk prosesi adat dan sesi foto pre-wedding yang tak terlupakan.</p>
+      <div class="service-price-block">
+        <div class="price-row">
+          <span class="price-label">Harga</span>
+          <span class="price-val">Rp 450.000</span>
+        </div>
+        <div class="service-includes">
+          <span class="tag">Free Softlens</span>
+          <span class="tag">Free Hijab Do</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wedding -->
+    <div class="service-card fade-up">
+      <div class="service-icon">👰</div>
+      <div class="service-name">Make Up Wedding</div>
+      <p class="service-desc">Paket lengkap untuk hari sakral pernikahanmu. 2x make up (Mappacci &amp; Akad) plus add-on resepsi.</p>
+      <div class="service-price-block">
+        <div class="price-row">
+          <span class="price-label">Paket Utama (2x MU)</span>
+          <span class="price-val">Rp 2.500.000</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">+ Retouch Resepsi</span>
+          <span class="price-val">+ Rp 500.000</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">+ Sanggul Dadasa</span>
+          <span class="price-val">+ Rp 500.000 – 700.000</span>
+        </div>
+        <div class="service-includes">
+          <span class="tag">Free Hijab Do</span>
+          <span class="tag">Free Softlens</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wisuda -->
+    <div class="service-card fade-up">
+      <div class="service-icon">🎓</div>
+      <div class="service-name">Make Up Wisuda</div>
+      <p class="service-desc">Tampil cantik dan berkesan di hari kelulusanmu. Foto wisuda jadi makin sempurna dan memorable.</p>
+      <div class="service-price-block">
+        <div class="price-row">
+          <span class="price-label">Harga</span>
+          <span class="price-val">Rp 200.000</span>
+        </div>
+        <div class="service-includes">
+          <span class="tag">Free Softlens</span>
+          <span class="tag">Free Hijab Do</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div style="text-align:center;margin-top:3rem" class="fade-up">
+    <a href="booking.html" class="btn btn-primary">Booking Sekarang →</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div id="about">
+  <div class="about-visual fade-up">
+    <div class="about-img-box">
+      <div class="about-img-overlay">Beauty</div>
+    </div>
+    <div class="about-accent"></div>
+    <div class="about-dot">✨</div>
+  </div>
+  <div class="about-content fade-up">
+    <div class="section-header">
+      <p class="section-eye">Tentang Kami</p>
+      <h2 class="section-title">Keindahan yang <em>Tulus</em> dari Hati</h2>
+    </div>
+    <p class="about-text">
+      Satriani Makeup Art hadir untuk membantu setiap perempuan tampil percaya diri dan cantik di momen-momen terpenting hidupnya. Berlokasi di Marioriwawo, Kabupaten Soppeng, kami melayani dengan sepenuh hati menggunakan produk berkualitas dan teknik profesional.
+    </p>
+    <p class="about-text">
+      Dengan pengalaman di berbagai jenis acara — dari pernikahan adat Bugis, wisuda, hingga pesta — kami memahami bahwa setiap wajah adalah kanvas unik yang berhak tampil memukau.
+    </p>
+    <div class="about-features">
+      <div class="feat-item">
+        <div class="feat-icon">🎨</div>
+        <div class="feat-text"><strong>Teknik Profesional</strong>Riasan tahan lama, natural &amp; glam</div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon">💎</div>
+        <div class="feat-text"><strong>Produk Premium</strong>Aman untuk semua jenis kulit</div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon">⏰</div>
+        <div class="feat-text"><strong>Tepat Waktu</strong>Selalu hadir sesuai jadwal booking</div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon">🤝</div>
+        <div class="feat-text"><strong>Konsultasi Gratis</strong>Diskusi tampilan sebelum hari H</div>
+      </div>
+    </div>
+    <a href="https://wa.me/6282347799110" target="_blank" rel="noopener" class="btn btn-primary">
+      💬 Konsultasi via WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-header fade-up">
+    <p class="section-eye">Cara Kerja</p>
+    <h2 class="section-title">Proses <em>Mudah</em> &amp; Terpercaya</h2>
+    <p class="section-sub">Dari booking hingga tampil cantik — semua serba mudah dan transparan.</p>
+  </div>
+  <div class="process-steps">
+    <div class="step fade-up">
+      <div class="step-num">01</div>
+      <span class="step-icon">📱</span>
+      <div class="step-title">Pilih Paket</div>
+      <p class="step-desc">Pilih layanan dan paket yang sesuai dengan acara dan budget kamu.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">02</div>
+      <span class="step-icon">📅</span>
+      <div class="step-title">Tentukan Jadwal</div>
+      <p class="step-desc">Pilih tanggal dan waktu yang tersedia sesuai hari istimewamu.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">03</div>
+      <span class="step-icon">✅</span>
+      <div class="step-title">Konfirmasi Booking</div>
+      <p class="step-desc">Isi data diri, konfirmasi booking, dan terima notifikasi via email &amp; WA.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">04</div>
+      <span class="step-icon">💄</span>
+      <div class="step-title">Tampil Cantik!</div>
+      <p class="step-desc">Kami hadir sesuai jadwal dan kamu siap tampil memukau di hari spesialmu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-header fade-up">
+    <p class="section-eye">Testimoni</p>
+    <h2 class="section-title">Kata <em>Mereka</em> tentang Kami</h2>
+    <p class="section-sub">Kepuasan klien adalah kebanggaan terbesar kami.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card fade-up">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Makeup wedding saya luar biasa! Tahan dari pagi sampai malam, dan hasil fotonya cantik banget. Sangat direkomendasikan!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">N</div>
+        <div>
+          <div class="testi-name">Nurhayati</div>
+          <div class="testi-role">Wedding di Soppeng</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fade-up">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Untuk wisuda saya, hasilnya natural tapi tetap glowing. Free softlens dan hijab do-nya oke banget. Harga terjangkau!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div>
+          <div class="testi-name">Aisyah Ramadhani</div>
+          <div class="testi-role">Wisuda UNHAS</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fade-up">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Prawed kami jadi sangat berkesan berkat makeup yang sempurna. Fotografer pun memuji hasilnya. Terima kasih Satriani MUA!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">R</div>
+        <div>
+          <div class="testi-name">Reski &amp; Andi</div>
+          <div class="testi-role">Prewed Marioriwawo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section id="cta-band">
+  <p class="section-eye">Siap Tampil Cantik?</p>
+  <h2>Booking Sekarang &amp;<br>Wujudkan Penampilanmu</h2>
+  <p>Slots terbatas — pastikan tanggal istimewamu sudah tercatat bersama kami.</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+    <a href="booking.html" class="btn btn-white">📅 Book Sekarang</a>
+    <a href="https://wa.me/6282347799110" target="_blank" rel="noopener" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.4)">
+      💬 Chat via WA
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Satriani <span>Makeup Art</span></div>
+      <p class="footer-brand-desc">Professional Makeup Artist di Marioriwawo, Kabupaten Soppeng. Melayani dengan sepenuh hati untuk setiap momen spesialmu.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Layanan</h4>
+      <ul>
+        <li><a href="#services">Make Up Party</a></li>
+        <li><a href="#services">Mappettu Ada / Prawed</a></li>
+        <li><a href="#services">Make Up Wedding</a></li>
+        <li><a href="#services">Make Up Wisuda</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Kontak</h4>
+      <p>📍 Marioriwawo,<br>Kabupaten Soppeng,<br>Sulawesi Selatan</p>
+      <p style="margin-top:.8rem">📱 <a href="https://wa.me/6282347799110">+62 823-4779-9110</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Satriani Makeup Art. All rights reserved.</span>
+    <span>Made with ♥ in Soppeng</span>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOATING -->
+<a href="https://wa.me/6282347799110?text=Halo%20Satriani%20Makeup%20Art,%20saya%20ingin%20booking%20makeup%20untuk%20acara%20saya." 
+   target="_blank" rel="noopener" class="wa-float" aria-label="Chat WhatsApp">
+  <span class="wa-tooltip">Chat WhatsApp</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Mobile menu toggle
+  const toggle = document.getElementById('navToggle');
+  const links  = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  // Fade-up on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

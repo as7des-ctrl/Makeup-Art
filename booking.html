@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booking — Satriani Makeup Art</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose:      #c9956c;
+      --rose-deep: #a8714a;
+      --rose-lt:   #e8c9b0;
+      --blush:     #f5ede6;
+      --cream:     #fdf8f4;
+      --ink:       #2a1f1a;
+      --muted:     #7a6256;
+      --gold:      #c9a96e;
+      --gold-lt:   #e8d5b0;
+      --success:   #4caf84;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--blush);
+      color: var(--ink);
+      min-height: 100svh;
+    }
+
+    /* ── HEADER ── */
+    .booking-header {
+      background: var(--ink);
+      padding: 1.2rem 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .booking-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600;
+      color: #fff; text-decoration: none;
+    }
+    .booking-logo span { color: var(--rose-lt); }
+    .back-link {
+      font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); text-decoration: none;
+      display: flex; align-items: center; gap: .4rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--rose-lt); }
+
+    /* ── LAYOUT ── */
+    .booking-wrap {
+      max-width: 860px; margin-inline: auto;
+      padding: 2.5rem 5vw 4rem;
+    }
+
+    /* ── STEPPER ── */
+    .stepper {
+      display: flex; align-items: center;
+      margin-bottom: 2.8rem;
+      gap: 0;
+    }
+    .step-item {
+      display: flex; align-items: center;
+      flex: 1;
+    }
+    .step-circle {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .78rem; font-weight: 500;
+      background: var(--cream); border: 2px solid var(--rose-lt);
+      color: var(--muted); transition: all .3s; z-index: 1;
+    }
+    .step-item.active .step-circle {
+      background: var(--rose); border-color: var(--rose);
+      color: #fff; box-shadow: 0 4px 14px rgba(201,149,108,.4);
+    }
+    .step-item.done .step-circle {
+      background: var(--rose-deep); border-color: var(--rose-deep);
+      color: #fff;
+    }
+    .step-label {
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); margin-left: .6rem; white-space: nowrap;
+    }
+    .step-item.active .step-label { color: var(--rose); font-weight: 500; }
+    .step-line {
+      flex: 1; height: 2px; background: var(--rose-lt);
+      margin: 0 .4rem; min-width: 20px;
+      transition: background .3s;
+    }
+    .step-line.done { background: var(--rose-deep); }
+
+    /* ── CARD ── */
+    .booking-card {
+      background: var(--cream);
+      border-radius: 24px;
+      padding: 2.6rem 2.4rem;
+      border: 1px solid rgba(201,149,108,.15);
+      box-shadow: 0 8px 40px rgba(42,31,26,.06);
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 400;
+      color: var(--ink); margin-bottom: .4rem;
+    }
+    .card-sub { font-size: .85rem; color: var(--muted); margin-bottom: 2rem; }
+
+    /* ── PACKAGES ── */
+    .pkg-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media(max-width:600px){ .pkg-grid { grid-template-columns: 1fr; } }
+
+    .pkg-card {
+      border: 2px solid var(--rose-lt);
+      border-radius: 16px; padding: 1.4rem 1.2rem;
+      cursor: pointer; transition: all .25s;
+      position: relative; background: var(--cream);
+    }
+    .pkg-card:hover { border-color: var(--rose); box-shadow: 0 6px 20px rgba(201,149,108,.15); }
+    .pkg-card.selected {
+      border-color: var(--rose); background: var(--blush);
+      box-shadow: 0 8px 28px rgba(201,149,108,.25);
+    }
+    .pkg-card.selected::after {
+      content: '✓'; position: absolute; top: .8rem; right: .8rem;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--rose); color: #fff;
+      font-size: .78rem; display: flex; align-items: center; justify-content: center;
+    }
+    .pkg-icon { font-size: 1.6rem; margin-bottom: .7rem; }
+    .pkg-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; font-weight: 600; color: var(--ink);
+      margin-bottom: .3rem;
+    }
+    .pkg-price { font-size: .82rem; color: var(--rose); font-weight: 500; margin-bottom: .5rem; }
+    .pkg-includes { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .pkg-tag {
+      font-size: .62rem; letter-spacing: .06em; text-transform: uppercase;
+      background: var(--gold-lt); color: var(--rose-deep);
+      border-radius: 100px; padding: .2rem .6rem;
+    }
+
+    /* Sub-option for party -->  */
+    .sub-options {
+      display: none; margin-top: 1rem;
+      border-top: 1px solid var(--rose-lt); padding-top: 1rem;
+    }
+    .sub-options.visible { display: block; }
+    .sub-options label {
+      display: flex; align-items: center; gap: .7rem;
+      font-size: .84rem; color: var(--muted); margin-bottom: .5rem; cursor: pointer;
+    }
+    .sub-options input[type=radio] { accent-color: var(--rose); width: 16px; height: 16px; }
+    .sub-options label span { color: var(--rose); font-weight: 500; font-size: .9rem; margin-left: auto; }
+
+    /* ── FORM FIELDS ── */
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.2rem; margin-bottom: 1.2rem;
+    }
+    @media(max-width:600px){ .form-row { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: .4rem; }
+    .form-group.full { grid-column: span 2; }
+    @media(max-width:600px){ .form-group.full { grid-column: span 1; } }
+    label {
+      font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    input, select, textarea {
+      padding: .75rem 1rem; border-radius: 10px;
+      border: 1.5px solid var(--rose-lt);
+      background: var(--cream); color: var(--ink);
+      font-family: 'Jost', sans-serif; font-size: .9rem;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none; width: 100%;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px rgba(201,149,108,.15);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* ── DATETIME PICKER ── */
+    .date-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.2rem; margin-bottom: 1.4rem;
+    }
+    @media(max-width:600px){ .date-grid { grid-template-columns: 1fr; } }
+
+    .time-slots {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: .6rem; margin-top: 1rem;
+    }
+    @media(max-width:600px){ .time-slots { grid-template-columns: repeat(3,1fr); } }
+    .time-slot {
+      padding: .55rem .4rem; text-align: center; border-radius: 8px;
+      border: 1.5px solid var(--rose-lt); cursor: pointer;
+      font-size: .78rem; color: var(--muted); transition: all .2s;
+      background: var(--cream);
+    }
+    .time-slot:hover:not(.booked) { border-color: var(--rose); color: var(--rose); }
+    .time-slot.selected { background: var(--rose); border-color: var(--rose); color: #fff; }
+    .time-slot.booked {
+      background: var(--blush); color: rgba(122,98,86,.35);
+      cursor: not-allowed; text-decoration: line-through;
+    }
+
+    .slot-legend { display: flex; gap: 1.5rem; margin-top: .8rem; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: .4rem; font-size: .72rem; color: var(--muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── SUMMARY ── */
+    .summary-box {
+      border: 1px solid var(--gold-lt); border-radius: 16px;
+      overflow: hidden; margin-bottom: 1.4rem;
+    }
+    .summary-header {
+      background: linear-gradient(135deg, var(--rose), var(--gold));
+      padding: 1.1rem 1.4rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: #fff; font-weight: 600;
+    }
+    .summary-body { padding: 1.4rem; }
+    .summary-row {
+      display: flex; justify-content: space-between;
+      align-items: baseline; margin-bottom: .8rem;
+      font-size: .86rem;
+    }
+    .summary-row:last-child { margin-bottom: 0; }
+    .summary-key { color: var(--muted); }
+    .summary-val { color: var(--ink); font-weight: 500; text-align: right; }
+    .summary-divider { height: 1px; background: var(--gold-lt); margin: .9rem 0; }
+    .summary-total {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600;
+    }
+    .summary-total .summary-val { color: var(--rose); }
+
+    .notice-box {
+      background: var(--blush); border: 1px solid var(--rose-lt);
+      border-radius: 12px; padding: 1rem 1.2rem;
+      font-size: .8rem; color: var(--muted); line-height: 1.6;
+    }
+    .notice-box strong { color: var(--rose-deep); }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex; gap: 1rem; justify-content: flex-end;
+      margin-top: 2rem; flex-wrap: wrap;
+    }
+    .btn {
+      padding: .82rem 2rem; border-radius: 100px;
+      font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+      font-family: 'Jost', sans-serif; font-weight: 500;
+      border: none; cursor: pointer; transition: all .25s;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-primary {
+      background: var(--rose); color: #fff;
+      box-shadow: 0 6px 20px rgba(201,149,108,.35);
+    }
+    .btn-primary:hover { background: var(--rose-deep); transform: translateY(-2px); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn-ghost {
+      background: transparent; color: var(--muted);
+      border: 1.5px solid var(--rose-lt);
+    }
+    .btn-ghost:hover { background: var(--blush); color: var(--rose-deep); }
+
+    /* ── SUCCESS ── */
+    #step-success { display: none; text-align: center; }
+    .success-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, #4caf84, #2e9e6b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin: 0 auto 1.6rem;
+      box-shadow: 0 8px 28px rgba(76,175,132,.3);
+    }
+    .success-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; color: var(--ink); margin-bottom: .6rem;
+    }
+    .success-sub { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 400px; margin-inline: auto; margin-bottom: 2rem; }
+    .success-details {
+      background: var(--blush); border-radius: 14px;
+      padding: 1.4rem; text-align: left; margin-bottom: 1.8rem;
+    }
+
+    /* ── LOADING OVERLAY ── */
+    .loading-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(253,248,244,.85); backdrop-filter: blur(6px);
+      z-index: 999; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1rem;
+    }
+    .loading-overlay.active { display: flex; }
+    .spinner {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 3px solid var(--rose-lt);
+      border-top-color: var(--rose);
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: .85rem; color: var(--muted); }
+
+    /* ── WA FLOAT ── */
+    .wa-float {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 100;
+      width: 54px; height: 54px; border-radius: 50%;
+      background: #25d366;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 24px rgba(37,211,102,.4);
+      text-decoration: none; transition: transform .25s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 26px; height: 26px; fill: #fff; }
+
+    /* step display control */
+    .step-page { display: none; }
+    .step-page.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="booking-header">
+  <a href="index.html" class="booking-logo">Satriani <span>Makeup Art</span></a>
+  <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+</header>
+
+<!-- MAIN -->
+<main class="booking-wrap">
+
+  <!-- STEPPER -->
+  <div class="stepper">
+    <div class="step-item active" id="s1">
+      <div class="step-circle" id="sc1">1</div>
+      <span class="step-label">Paket</span>
+    </div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step-item" id="s2">
+      <div class="step-circle" id="sc2">2</div>
+      <span class="step-label">Jadwal</span>
+    </div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step-item" id="s3">
+      <div class="step-circle" id="sc3">3</div>
+      <span class="step-label">Data Diri</span>
+    </div>
+    <div class="step-line" id="sl3"></div>
+    <div class="step-item" id="s4">
+      <div class="step-circle" id="sc4">4</div>
+      <span class="step-label">Konfirmasi</span>
+    </div>
+  </div>
+
+  <!-- CARD -->
+  <div class="booking-card">
+
+    <!-- STEP 1: PAKET -->
+    <div class="step-page active" id="step1">
+      <h2 class="card-title">Pilih Paket</h2>
+      <p class="card-sub">Pilih layanan yang sesuai dengan acara istimewamu.</p>
+
+      <div class="pkg-grid">
+        <!-- Party -->
+        <div class="pkg-card" data-pkg="party" onclick="selectPkg(this)">
+          <div class="pkg-icon">🎉</div>
+          <div class="pkg-name">Make Up Party</div>
+          <div class="pkg-price">Rp 100.000 – 250.000</div>
+          <div class="pkg-includes">
+            <span class="pkg-tag">Reguler / Premium</span>
+          </div>
+          <div class="sub-options" id="sub-party">
+            <label>
+              <input type="radio" name="party-type" value="Reguler" onclick="setSubPkg('Party Reguler','100.000 – 150.000',event)">
+              Party Reguler <span>Rp 100.000–150.000</span>
+            </label>
+            <label>
+              <input type="radio" name="party-type" value="Premium" onclick="setSubPkg('Party Premium','250.000',event)">
+              Party Premium <span>Rp 250.000</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Mappettu Ada -->
+        <div class="pkg-card" data-pkg="mappettu" onclick="selectPkg(this, 'Mappettu Ada / Prawed', '450.000')">
+          <div class="pkg-icon">🌸</div>
+          <div class="pkg-name">Mappettu Ada / Prawed</div>
+          <div class="pkg-price">Rp 450.000</div>
+          <div class="pkg-includes">
+            <span class="pkg-tag">Free Softlens</span>
+            <span class="pkg-tag">Free Hijab Do</span>
+          </div>
+        </div>
+
+        <!-- Wedding -->
+        <div class="pkg-card" data-pkg="wedding" onclick="selectPkg(this)">
+          <div class="pkg-icon">👰</div>
+          <div class="pkg-name">Make Up Wedding</div>
+          <div class="pkg-price">Rp 2.500.000+</div>
+          <div class="pkg-includes">
+            <span class="pkg-tag">Free Hijab Do</span>
+            <span class="pkg-tag">Free Softlens</span>
+          </div>
+          <div class="sub-options" id="sub-wedding">
+            <label>
+              <input type="radio" name="wedding-type" value="Paket Utama (Mappacci+Akad)" onclick="setSubPkg('Wedding Paket Utama','2.500.000',event)">
+              Paket Utama (2x MU) <span>Rp 2.500.000</span>
+            </label>
+            <label>
+              <input type="radio" name="wedding-type" value="Paket Utama + Retouch Resepsi" onclick="setSubPkg('Wedding + Retouch Resepsi','3.000.000',event)">
+              + Retouch Resepsi <span>Rp 3.000.000</span>
+            </label>
+            <label>
+              <input type="radio" name="wedding-type" value="Paket Utama + Retouch + Sanggul" onclick="setSubPkg('Wedding Lengkap + Sanggul','3.500.000 – 3.700.000',event)">
+              + Retouch + Sanggul <span>Rp 3.500.000+</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Wisuda -->
+        <div class="pkg-card" data-pkg="wisuda" onclick="selectPkg(this, 'Make Up Wisuda', '200.000')">
+          <div class="pkg-icon">🎓</div>
+          <div class="pkg-name">Make Up Wisuda</div>
+          <div class="pkg-price">Rp 200.000</div>
+          <div class="pkg-includes">
+            <span class="pkg-tag">Free Softlens</span>
+            <span class="pkg-tag">Free Hijab Do</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="goStep(2)" id="btn-next1" disabled>
+          Lanjut: Pilih Jadwal →
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: JADWAL -->
+    <div class="step-page" id="step2">
+      <h2 class="card-title">Pilih Jadwal</h2>
+      <p class="card-sub">Tentukan tanggal dan jam yang kamu inginkan.</p>
+
+      <div class="date-grid">
+        <div class="form-group">
+          <label>Tanggal Acara</label>
+          <input type="date" id="bookingDate" onchange="updateTimeSlots()" />
+        </div>
+        <div class="form-group">
+          <label>Lokasi Acara</label>
+          <input type="text" id="location" placeholder="Contoh: Kec. Marioriwawo, Soppeng" />
+        </div>
+      </div>
+
+      <label style="font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">
+        Pilih Jam
+      </label>
+      <div class="time-slots" id="timeSlots">
+        <!-- generated by JS -->
+      </div>
+      <div class="slot-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div> Dipilih</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--blush);border:1.5px solid var(--rose-lt)"></div> Tersedia</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--blush);opacity:.5"></div> Penuh</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(1)">← Kembali</button>
+        <button class="btn btn-primary" onclick="goStep(3)" id="btn-next2" disabled>
+          Lanjut: Data Diri →
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3: DATA DIRI -->
+    <div class="step-page" id="step3">
+      <h2 class="card-title">Data Diri</h2>
+      <p class="card-sub">Isi informasi dirimu agar kami bisa menghubungimu.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama Lengkap *</label>
+          <input type="text" id="clientName" placeholder="Nama lengkap kamu" required />
+        </div>
+        <div class="form-group">
+          <label>Nomor WhatsApp *</label>
+          <input type="tel" id="clientPhone" placeholder="08xx-xxxx-xxxx" required />
+        </div>
+        <div class="form-group">
+          <label>Alamat Email *</label>
+          <input type="email" id="clientEmail" placeholder="email@contoh.com" required />
+        </div>
+        <div class="form-group">
+          <label>Nama Acara / Keterangan</label>
+          <input type="text" id="clientEvent" placeholder="Contoh: Pernikahan Anisa & Rizki" />
+        </div>
+        <div class="form-group full">
+          <label>Catatan Tambahan</label>
+          <textarea id="clientNote" placeholder="Referensi makeup, permintaan khusus, dll."></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(2)">← Kembali</button>
+        <button class="btn btn-primary" onclick="goStep(4)">
+          Lanjut: Konfirmasi →
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4: KONFIRMASI -->
+    <div class="step-page" id="step4">
+      <h2 class="card-title">Konfirmasi Booking</h2>
+      <p class="card-sub">Cek kembali detail pesananmu sebelum mengirim.</p>
+
+      <div class="summary-box">
+        <div class="summary-header">✨ Ringkasan Booking</div>
+        <div class="summary-body">
+          <div class="summary-row">
+            <span class="summary-key">Paket</span>
+            <span class="summary-val" id="sum-pkg">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key">Tanggal</span>
+            <span class="summary-val" id="sum-date">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key">Waktu</span>
+            <span class="summary-val" id="sum-time">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key">Lokasi Acara</span>
+            <span class="summary-val" id="sum-loc">—</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row">
+            <span class="summary-key">Nama</span>
+            <span class="summary-val" id="sum-name">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key">WhatsApp</span>
+            <span class="summary-val" id="sum-phone">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key">Email</span>
+            <span class="summary-val" id="sum-email">—</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row summary-total">
+            <span class="summary-key">Estimasi Harga</span>
+            <span class="summary-val" id="sum-price">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-box">
+        <strong>📋 Informasi Penting:</strong><br>
+        Booking ini belum merupakan konfirmasi final. Tim kami akan menghubungi kamu via WhatsApp (<strong>+62 823-4779-9110</strong>) dalam 1×24 jam untuk konfirmasi jadwal dan pembayaran DP.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(3)">← Kembali</button>
+        <button class="btn btn-primary" onclick="submitBooking()" id="btn-submit">
+          🎉 Kirim Booking
+        </button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div id="step-success">
+      <div class="success-icon">✓</div>
+      <h2 class="success-title">Booking Terkirim!</h2>
+      <p class="success-sub">Terima kasih! Booking kamu sudah kami terima. Tim Satriani Makeup Art akan menghubungimu segera via WhatsApp untuk konfirmasi.</p>
+      <div class="success-details">
+        <div class="summary-row" style="margin-bottom:.5rem">
+          <span class="summary-key">Paket</span>
+          <span class="summary-val" id="suc-pkg">—</span>
+        </div>
+        <div class="summary-row" style="margin-bottom:.5rem">
+          <span class="summary-key">Tanggal & Waktu</span>
+          <span class="summary-val" id="suc-dt">—</span>
+        </div>
+        <div class="summary-row" style="margin-bottom:0">
+          <span class="summary-key">Nama</span>
+          <span class="summary-val" id="suc-name">—</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a id="wa-confirm" href="#" target="_blank" rel="noopener" class="btn btn-primary">
+          💬 Chat via WhatsApp
+        </a>
+        <a href="index.html" class="btn btn-ghost">← Kembali ke Beranda</a>
+      </div>
+    </div>
+
+  </div><!-- /card -->
+</main>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/6282347799110" target="_blank" rel="noopener" class="wa-float">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p class="loading-text">Mengirim booking...</p>
+</div>
+
+<script>
+// ── CONFIG ──
+// Ganti dengan URL Google Apps Script kamu setelah deploy
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHZpKFo7IlIhPbxOlMzqr4qYxnUhj3lP5bX7EcsKfySC2RIOv4BmqQetgaEL8GfkC0eQ/exec';
+
+// ── STATE ──
+let booking = {
+  pkg: '', pkgLabel: '', price: '',
+  date: '', time: '', location: '',
+  name: '', phone: '', email: '', event: '', note: ''
+};
+let currentStep = 1;
+
+// ── TIME SLOTS ──
+const ALL_TIMES = ['05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'];
+
+function updateTimeSlots() {
+  const d = document.getElementById('bookingDate').value;
+  booking.date = d;
+  const wrap = document.getElementById('timeSlots');
+  if (!d) { wrap.innerHTML = ''; return; }
+
+  // Min date = tomorrow
+  const today = new Date(); today.setHours(0,0,0,0);
+  const sel   = new Date(d + 'T00:00:00');
+  if (sel <= today) {
+    document.getElementById('bookingDate').value = '';
+    booking.date = '';
+    alert('Pilih tanggal minimal besok ya!');
+    wrap.innerHTML = ''; return;
+  }
+
+  wrap.innerHTML = ALL_TIMES.map(t => `
+    <div class="time-slot" onclick="selectTime(this,'${t}')">${t}</div>
+  `).join('');
+  booking.time = '';
+  document.getElementById('btn-next2').disabled = true;
+}
+
+function selectTime(el, t) {
+  if (el.classList.contains('booked')) return;
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  booking.time = t;
+  checkStep2();
+}
+
+function checkStep2() {
+  const ok = booking.date && booking.time;
+  document.getElementById('btn-next2').disabled = !ok;
+}
+
+// ── PACKAGE SELECTION ──
+function selectPkg(el, label, price) {
+  document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.sub-options').forEach(s => s.classList.remove('visible'));
+  el.classList.add('selected');
+  booking.pkg = el.dataset.pkg;
+
+  const subEl = document.getElementById('sub-' + el.dataset.pkg);
+  if (subEl) {
+    subEl.classList.add('visible');
+    // Reset sub-selection
+    booking.pkgLabel = '';
+    booking.price = '';
+    document.getElementById('btn-next1').disabled = true;
+  } else {
+    booking.pkgLabel = label || '';
+    booking.price = price || '';
+    document.getElementById('btn-next1').disabled = false;
+  }
+}
+
+function setSubPkg(label, price, e) {
+  e.stopPropagation();
+  booking.pkgLabel = label;
+  booking.price    = price;
+  document.getElementById('btn-next1').disabled = false;
+}
+
+// ── STEP NAV ──
+function goStep(n) {
+  // Validate step 3
+  if (n === 4) {
+    const name  = document.getElementById('clientName').value.trim();
+    const phone = document.getElementById('clientPhone').value.trim();
+    const email = document.getElementById('clientEmail').value.trim();
+    if (!name || !phone || !email) {
+      alert('Mohon lengkapi Nama, No. WhatsApp, dan Email terlebih dahulu.');
+      return;
+    }
+    booking.name  = name;
+    booking.phone = phone;
+    booking.email = email;
+    booking.event = document.getElementById('clientEvent').value.trim();
+    booking.note  = document.getElementById('clientNote').value.trim();
+    booking.location = document.getElementById('location').value.trim();
+    fillSummary();
+  }
+
+  // Update stepper
+  for (let i = 1; i <= 4; i++) {
+    const si = document.getElementById('s'  + i);
+    const sc = document.getElementById('sc' + i);
+    if (i < n)  { si.className = 'step-item done'; sc.textContent = '✓'; }
+    else if (i === n) { si.className = 'step-item active'; sc.textContent = i; }
+    else { si.className = 'step-item'; sc.textContent = i; }
+    if (i < 4) {
+      document.getElementById('sl' + i).className = 'step-line' + (i < n ? ' done' : '');
+    }
+  }
+
+  document.querySelectorAll('.step-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  currentStep = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function fillSummary() {
+  const dateStr = booking.date ? new Date(booking.date + 'T00:00:00')
+    .toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) : '—';
+  document.getElementById('sum-pkg').textContent   = booking.pkgLabel || '—';
+  document.getElementById('sum-date').textContent  = dateStr;
+  document.getElementById('sum-time').textContent  = booking.time ? booking.time + ' WITA' : '—';
+  document.getElementById('sum-loc').textContent   = booking.location || '—';
+  document.getElementById('sum-name').textContent  = booking.name;
+  document.getElementById('sum-phone').textContent = booking.phone;
+  document.getElementById('sum-email').textContent = booking.email;
+  document.getElementById('sum-price').textContent = 'Rp ' + (booking.price || '—');
+}
+
+// ── SUBMIT ──
+async function submitBooking() {
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.classList.add('active');
+
+  const payload = {
+    pkg: booking.pkgLabel,
+    price: booking.price,
+    date: booking.date,
+    time: booking.time,
+    location: booking.location,
+    name: booking.name,
+    phone: booking.phone,
+    email: booking.email,
+    event: booking.event,
+    note: booking.note,
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    if (APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    }
+    showSuccess();
+  } catch (err) {
+    console.error(err);
+    // Still show success (no-cors can't read response)
+    showSuccess();
+  } finally {
+    overlay.classList.remove('active');
+  }
+}
+
+function showSuccess() {
+  document.querySelectorAll('.step-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('step-success').style.display = 'block';
+
+  const dateStr = booking.date ? new Date(booking.date + 'T00:00:00')
+    .toLocaleDateString('id-ID', { weekday:'short', year:'numeric', month:'short', day:'numeric' }) : '';
+
+  document.getElementById('suc-pkg').textContent  = booking.pkgLabel;
+  document.getElementById('suc-dt').textContent   = dateStr + ' • ' + booking.time + ' WITA';
+  document.getElementById('suc-name').textContent = booking.name;
+
+  const waMsg = encodeURIComponent(
+    `Halo Satriani Makeup Art! 👋\n\nSaya baru saja melakukan booking:\n` +
+    `📌 Paket: ${booking.pkgLabel}\n` +
+    `📅 Tanggal: ${dateStr}\n` +
+    `⏰ Jam: ${booking.time} WITA\n` +
+    `📍 Lokasi: ${booking.location}\n` +
+    `👤 Nama: ${booking.name}\n\nMohon konfirmasinya, terima kasih! ✨`
+  );
+  document.getElementById('wa-confirm').href = `https://wa.me/6282347799110?text=${waMsg}`;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── INIT DATE MIN ──
+window.addEventListener('DOMContentLoaded', () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('bookingDate').min = tomorrow.toISOString().split('T')[0];
+});
+</script>
+</body>
+</html>
