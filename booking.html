@@ -617,8 +617,9 @@
 </div>
 
 <script>
-// ── CONFIG ──
-// Ganti dengan URL Google Apps Script kamu setelah deploy 
+// ══════════════════════════════════════════════════════════════
+//  CONFIG — Ganti dengan URL Apps Script setelah deploy
+// ══════════════════════════════════════════════════════════════
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHZpKFo7IlIhPbxOlMzqr4qYxnUhj3lP5bX7EcsKfySC2RIOv4BmqQetgaEL8GfkC0eQ/exec';
 
 // ── STATE ──
@@ -627,18 +628,23 @@ let booking = {
   date: '', time: '', location: '',
   name: '', phone: '', email: '', event: '', note: ''
 };
-let currentStep = 1;
+let currentStep   = 1;
+let bookedSlotsCache = {}; // cache per tanggal agar tidak re-fetch terus
 
-// ── TIME SLOTS ──
+// ── ALL TIME SLOTS ──
 const ALL_TIMES = ['05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'];
 
-function updateTimeSlots() {
-  const d = document.getElementById('bookingDate').value;
+// ══════════════════════════════════════════════════════════════
+//  REAL-TIME SLOT CHECK — fetch dari Google Calendar via Apps Script
+// ══════════════════════════════════════════════════════════════
+async function updateTimeSlots() {
+  const d    = document.getElementById('bookingDate').value;
   booking.date = d;
   const wrap = document.getElementById('timeSlots');
+
   if (!d) { wrap.innerHTML = ''; return; }
 
-  // Min date = tomorrow
+  // Validasi: harus minimal besok
   const today = new Date(); today.setHours(0,0,0,0);
   const sel   = new Date(d + 'T00:00:00');
   if (sel <= today) {
@@ -648,11 +654,55 @@ function updateTimeSlots() {
     wrap.innerHTML = ''; return;
   }
 
-  wrap.innerHTML = ALL_TIMES.map(t => `
-    <div class="time-slot" onclick="selectTime(this,'${t}')">${t}</div>
-  `).join('');
+  // Tampilkan skeleton loading
+  wrap.innerHTML = ALL_TIMES.map(() =>
+    `<div class="time-slot" style="background:var(--blush);animation:shimmer 1.2s ease-in-out infinite;cursor:default">...</div>`
+  ).join('');
   booking.time = '';
   document.getElementById('btn-next2').disabled = true;
+
+  // Fetch dari cache dulu
+  let booked = bookedSlotsCache[d];
+
+  if (!booked) {
+    booked = await fetchBookedSlots(d);
+    bookedSlotsCache[d] = booked; // simpan cache
+  }
+
+  renderSlots(wrap, booked);
+}
+
+async function fetchBookedSlots(dateStr) {
+  // Jika URL belum diset, return kosong (semua slot tersedia)
+  if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return [];
+
+  try {
+    const url  = `${APPS_SCRIPT_URL}?action=getSlots&date=${dateStr}`;
+    const resp = await fetch(url);
+    const json = await resp.json();
+    return Array.isArray(json.bookedSlots) ? json.bookedSlots : [];
+  } catch (err) {
+    console.warn('Slot fetch failed, showing all available:', err);
+    return []; // fallback: tampilkan semua tersedia
+  }
+}
+
+function renderSlots(wrap, bookedSlots) {
+  wrap.innerHTML = ALL_TIMES.map(t => {
+    const isBooked = bookedSlots.includes(t);
+    return isBooked
+      ? `<div class="time-slot booked" title="Sudah terbooked">${t}<br><small style="font-size:.6rem">Penuh</small></div>`
+      : `<div class="time-slot" onclick="selectTime(this,'${t}')">${t}</div>`;
+  }).join('');
+
+  // Jika semua penuh, tampilkan info
+  if (bookedSlots.length >= ALL_TIMES.length) {
+    wrap.insertAdjacentHTML('afterend',
+      `<p style="font-size:.8rem;color:var(--rose);margin-top:.6rem;text-align:center">
+        😔 Semua slot pada tanggal ini sudah terbooked. Silakan pilih tanggal lain.
+      </p>`
+    );
+  }
 }
 
 function selectTime(el, t) {
@@ -664,11 +714,12 @@ function selectTime(el, t) {
 }
 
 function checkStep2() {
-  const ok = booking.date && booking.time;
-  document.getElementById('btn-next2').disabled = !ok;
+  document.getElementById('btn-next2').disabled = !(booking.date && booking.time);
 }
 
-// ── PACKAGE SELECTION ──
+// ══════════════════════════════════════════════════════════════
+//  PACKAGE SELECTION
+// ══════════════════════════════════════════════════════════════
 function selectPkg(el, label, price) {
   document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
   document.querySelectorAll('.sub-options').forEach(s => s.classList.remove('visible'));
@@ -678,13 +729,12 @@ function selectPkg(el, label, price) {
   const subEl = document.getElementById('sub-' + el.dataset.pkg);
   if (subEl) {
     subEl.classList.add('visible');
-    // Reset sub-selection
     booking.pkgLabel = '';
-    booking.price = '';
+    booking.price    = '';
     document.getElementById('btn-next1').disabled = true;
   } else {
     booking.pkgLabel = label || '';
-    booking.price = price || '';
+    booking.price    = price || '';
     document.getElementById('btn-next1').disabled = false;
   }
 }
@@ -696,9 +746,10 @@ function setSubPkg(label, price, e) {
   document.getElementById('btn-next1').disabled = false;
 }
 
-// ── STEP NAV ──
+// ══════════════════════════════════════════════════════════════
+//  STEP NAVIGATION
+// ══════════════════════════════════════════════════════════════
 function goStep(n) {
-  // Validate step 3
   if (n === 4) {
     const name  = document.getElementById('clientName').value.trim();
     const phone = document.getElementById('clientPhone').value.trim();
@@ -707,25 +758,22 @@ function goStep(n) {
       alert('Mohon lengkapi Nama, No. WhatsApp, dan Email terlebih dahulu.');
       return;
     }
-    booking.name  = name;
-    booking.phone = phone;
-    booking.email = email;
-    booking.event = document.getElementById('clientEvent').value.trim();
-    booking.note  = document.getElementById('clientNote').value.trim();
+    booking.name     = name;
+    booking.phone    = phone;
+    booking.email    = email;
+    booking.event    = document.getElementById('clientEvent').value.trim();
+    booking.note     = document.getElementById('clientNote').value.trim();
     booking.location = document.getElementById('location').value.trim();
     fillSummary();
   }
 
-  // Update stepper
   for (let i = 1; i <= 4; i++) {
     const si = document.getElementById('s'  + i);
     const sc = document.getElementById('sc' + i);
-    if (i < n)  { si.className = 'step-item done'; sc.textContent = '✓'; }
-    else if (i === n) { si.className = 'step-item active'; sc.textContent = i; }
-    else { si.className = 'step-item'; sc.textContent = i; }
-    if (i < 4) {
-      document.getElementById('sl' + i).className = 'step-line' + (i < n ? ' done' : '');
-    }
+    if      (i < n)  { si.className = 'step-item done';   sc.textContent = '✓'; }
+    else if (i === n){ si.className = 'step-item active';  sc.textContent = i;   }
+    else             { si.className = 'step-item';         sc.textContent = i;   }
+    if (i < 4) document.getElementById('sl'+i).className = 'step-line' + (i < n ? ' done' : '');
   }
 
   document.querySelectorAll('.step-page').forEach(p => p.classList.remove('active'));
@@ -735,8 +783,9 @@ function goStep(n) {
 }
 
 function fillSummary() {
-  const dateStr = booking.date ? new Date(booking.date + 'T00:00:00')
-    .toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) : '—';
+  const dateStr = booking.date
+    ? new Date(booking.date + 'T00:00:00').toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' })
+    : '—';
   document.getElementById('sum-pkg').textContent   = booking.pkgLabel || '—';
   document.getElementById('sum-date').textContent  = dateStr;
   document.getElementById('sum-time').textContent  = booking.time ? booking.time + ' WITA' : '—';
@@ -747,50 +796,57 @@ function fillSummary() {
   document.getElementById('sum-price').textContent = 'Rp ' + (booking.price || '—');
 }
 
-// ── SUBMIT ──
+// ══════════════════════════════════════════════════════════════
+//  SUBMIT BOOKING
+// ══════════════════════════════════════════════════════════════
 async function submitBooking() {
   const overlay = document.getElementById('loadingOverlay');
+  const btnSubmit = document.getElementById('btn-submit');
   overlay.classList.add('active');
+  btnSubmit.disabled = true;
 
   const payload = {
-    pkg: booking.pkgLabel,
-    price: booking.price,
-    date: booking.date,
-    time: booking.time,
-    location: booking.location,
-    name: booking.name,
-    phone: booking.phone,
-    email: booking.email,
-    event: booking.event,
-    note: booking.note,
+    pkg: booking.pkgLabel, price: booking.price,
+    date: booking.date, time: booking.time, location: booking.location,
+    name: booking.name, phone: booking.phone, email: booking.email,
+    event: booking.event, note: booking.note,
     timestamp: new Date().toISOString()
   };
 
   try {
     if (APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+      // Gunakan no-cors untuk POST (Apps Script tidak support CORS preflight)
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+      // no-cors = kita tidak bisa baca response, tapi request terkirim ✅
+      // Invalidate cache tanggal ini agar slot ter-refresh jika ada yg balik
+      delete bookedSlotsCache[booking.date];
     }
     showSuccess();
   } catch (err) {
-    console.error(err);
-    // Still show success (no-cors can't read response)
+    console.error('Submit error:', err);
+    // Tetap show success karena no-cors sering throw network error palsu
     showSuccess();
   } finally {
     overlay.classList.remove('active');
+    btnSubmit.disabled = false;
   }
 }
 
+// ══════════════════════════════════════════════════════════════
+//  SUCCESS SCREEN
+// ══════════════════════════════════════════════════════════════
 function showSuccess() {
   document.querySelectorAll('.step-page').forEach(p => p.classList.remove('active'));
   document.getElementById('step-success').style.display = 'block';
 
-  const dateStr = booking.date ? new Date(booking.date + 'T00:00:00')
-    .toLocaleDateString('id-ID', { weekday:'short', year:'numeric', month:'short', day:'numeric' }) : '';
+  const dateStr = booking.date
+    ? new Date(booking.date + 'T00:00:00').toLocaleDateString('id-ID', { weekday:'short', year:'numeric', month:'short', day:'numeric' })
+    : '';
 
   document.getElementById('suc-pkg').textContent  = booking.pkgLabel;
   document.getElementById('suc-dt').textContent   = dateStr + ' • ' + booking.time + ' WITA';
@@ -805,16 +861,28 @@ function showSuccess() {
     `👤 Nama: ${booking.name}\n\nMohon konfirmasinya, terima kasih! ✨`
   );
   document.getElementById('wa-confirm').href = `https://wa.me/6282347799110?text=${waMsg}`;
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── INIT DATE MIN ──
+// ══════════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
+  // Set min date = besok
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   document.getElementById('bookingDate').min = tomorrow.toISOString().split('T')[0];
 });
+
+// Shimmer animation untuk loading state
+const shimmerStyle = document.createElement('style');
+shimmerStyle.textContent = `
+  @keyframes shimmer {
+    0%,100% { opacity: .5; }
+    50%      { opacity: 1;  }
+  }
+`;
+document.head.appendChild(shimmerStyle);
 </script>
 </body>
 </html>
